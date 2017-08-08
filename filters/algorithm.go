@@ -1,8 +1,10 @@
-package algorithm
+package filters
 
 import (
 	"math"
 )
+
+type similarity func(ratedItems1, ratedItems2 map[string]float64) float64
 
 func EuclideanDistance(ratedItems1, ratedItems2 map[string]float64) float64 {
 
