@@ -69,8 +69,8 @@ func GetRecommendations(prefs datasource.Prefs, person string, algorithm similar
 				continue
 			}
 
-			sumSim[name] = sumSim[name] + weight
-			sumScore[name] = sumScore[name] + score*weight
+			sumSim[name] += +weight
+			sumScore[name] += score * weight
 		}
 	}
 
@@ -78,6 +78,43 @@ func GetRecommendations(prefs datasource.Prefs, person string, algorithm similar
 		itemScore := ItemScore{
 			Name:  name,
 			Score: score / sumSim[name],
+		}
+
+		ps = append(ps, itemScore)
+	}
+
+	sort.Sort(ByScore(ps))
+
+	return
+}
+
+func GetRecommendationItems(itemMatch datasource.Prefs, userRates map[string]float64) (ps []ItemScore) {
+
+	var (
+		sumSim   = map[string]float64{}
+		sumScore = map[string]float64{}
+	)
+
+	// Loop over items rated by the user
+	for ratedName, ratedScore := range userRates {
+
+		// Loop over items similar to this one
+		for name, score := range itemMatch[ratedName] {
+			// Ignore if this user has already rated this item
+			if _, ok := userRates[name]; ok {
+				continue
+			}
+
+			sumSim[name] += score
+			sumScore[name] += score * ratedScore
+
+		}
+	}
+
+	for name, score := range sumSim {
+		itemScore := ItemScore{
+			Name:  name,
+			Score: sumScore[name] / score,
 		}
 
 		ps = append(ps, itemScore)

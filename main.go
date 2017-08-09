@@ -40,16 +40,25 @@ func main() {
 	}
 
 	fmt.Printf("\n4. Matching products for \"%s\"\n", targetMovie)
-	prefs := datasource.TransformPrefs(datasource.Critics)
-	productScores := filters.TopMatches(prefs, targetMovie, filters.PearsonCorrelation)
+	moviePrefs := filters.TransformPrefs(datasource.Critics)
+	productScores := filters.TopMatches(moviePrefs, targetMovie, filters.PearsonCorrelation)
 	for i, ps := range productScores {
 		fmt.Printf("  %d) %s: %+v\n", i+1, ps.Name, ps.Score)
 	}
 
 	targetMovie = "Just My Luck"
 	fmt.Printf("\n5. Getting recommended critics for \"%s\"\n", targetMovie)
-	itemScores = filters.GetRecommendations(prefs, targetMovie, filters.PearsonCorrelation)
+	itemScores = filters.GetRecommendations(moviePrefs, targetMovie, filters.PearsonCorrelation)
 	for i, ps := range itemScores {
 		fmt.Printf("  %d) %s: %+v\n", i+1, ps.Name, ps.Score)
 	}
+
+	fmt.Printf("\n6. Item-based filtering, Getting recommendations for %s\n", targetPerson)
+	itemMatch := filters.CalculateSimilarItems(moviePrefs)
+	userRates := datasource.Critics[targetPerson]
+	itemScores = filters.GetRecommendationItems(itemMatch, userRates)
+	for i, ps := range itemScores {
+		fmt.Printf("  %d) %s: %+v\n", i+1, ps.Name, ps.Score)
+	}
+
 }

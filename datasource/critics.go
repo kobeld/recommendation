@@ -44,24 +44,5 @@ var Critics Prefs = map[string]map[string]float64{
 	"Toby": map[string]float64{
 		"Snakes on a Plane":  4.5,
 		"You, Me and Dupree": 1.0,
-		"Superman Returns":   4.0}}
-
-func TransformPrefs(prefs Prefs) Prefs {
-
-	var (
-		result = map[string]map[string]float64{}
-	)
-
-	for name, items := range prefs {
-		for key, value := range items {
-
-			if _, ok := result[key]; !ok {
-				result[key] = map[string]float64{}
-			}
-
-			result[key][name] = value
-		}
-	}
-
-	return result
+		"Superman Returns":   4.0},
 }
