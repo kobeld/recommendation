@@ -1,11 +1,11 @@
 package filters
 
-type PersonScore struct {
+type ItemScore struct {
 	Name  string
 	Score float64
 }
 
-type ByScore []PersonScore
+type ByScore []ItemScore
 
 func (bs ByScore) Len() int           { return len(bs) }
 func (bs ByScore) Swap(i, j int)      { bs[i], bs[j] = bs[j], bs[i] }
