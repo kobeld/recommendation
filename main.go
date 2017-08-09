@@ -24,6 +24,7 @@ func main() {
 
 	var (
 		targetPerson = "Toby"
+		targetMovie  = "Superman Returns"
 	)
 
 	fmt.Printf("\n2. Ranking the Critics for %s\n", targetPerson)
@@ -38,4 +39,17 @@ func main() {
 		fmt.Printf("  %d) %s: %+v\n", i+1, ps.Name, ps.Score)
 	}
 
+	fmt.Printf("\n4. Matching products for \"%s\"\n", targetMovie)
+	prefs := datasource.TransformPrefs(datasource.Critics)
+	productScores := filters.TopMatches(prefs, targetMovie, filters.PearsonCorrelation)
+	for i, ps := range productScores {
+		fmt.Printf("  %d) %s: %+v\n", i+1, ps.Name, ps.Score)
+	}
+
+	targetMovie = "Just My Luck"
+	fmt.Printf("\n5. Getting recommended critics for \"%s\"\n", targetMovie)
+	itemScores = filters.GetRecommendations(prefs, targetMovie, filters.PearsonCorrelation)
+	for i, ps := range itemScores {
+		fmt.Printf("  %d) %s: %+v\n", i+1, ps.Name, ps.Score)
+	}
 }
