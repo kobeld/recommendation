@@ -59,7 +59,10 @@ func GetRecommendations(prefs datasource.Prefs, person string, algorithm similar
 
 		// Ignore scores of zero or lower
 		weight := algorithm(personItems, otherItems)
-		if weight <= 0 {
+
+		println(weight)
+
+		if weight <= 0.0 {
 			continue
 		}
 
@@ -71,6 +74,10 @@ func GetRecommendations(prefs datasource.Prefs, person string, algorithm similar
 
 			sumSim[name] += +weight
 			sumScore[name] += score * weight
+			println("-----")
+			println(sumSim[name])
+			println(sumScore[name])
+			println("-----")
 		}
 	}
 
