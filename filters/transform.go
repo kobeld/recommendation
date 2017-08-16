@@ -24,7 +24,7 @@ func TransformPrefs(prefs datasource.Prefs) datasource.Prefs {
 	return result
 }
 
-func CalculateSimilarItems(prefs datasource.Prefs) datasource.Prefs {
+func CalculateSimilarItems(prefs datasource.Prefs, algorithm similarity) datasource.Prefs {
 
 	var (
 		result = map[string]map[string]float64{}
@@ -33,7 +33,7 @@ func CalculateSimilarItems(prefs datasource.Prefs) datasource.Prefs {
 	for name := range prefs {
 
 		result[name] = map[string]float64{}
-		scores := TopMatches(prefs, name, EuclideanDistance)
+		scores := TopMatches(prefs, name, algorithm)
 
 		for _, score := range scores {
 			result[name][score.Name] = score.Score

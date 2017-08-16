@@ -39,6 +39,9 @@ func TopMatches(prefs datasource.Prefs, person string, algorithm similarity) (ps
 	}
 
 	sort.Sort(ByScore(ps))
+	if len(ps) > 5 {
+		ps = ps[:5]
+	}
 
 	return
 }
@@ -60,24 +63,28 @@ func GetRecommendations(prefs datasource.Prefs, person string, algorithm similar
 		// Ignore scores of zero or lower
 		weight := algorithm(personItems, otherItems)
 
-		println(weight)
-
 		if weight <= 0.0 {
 			continue
 		}
 
 		for name, score := range otherItems {
 			// Only score items I haven't touch yet
-			if _, ok := personItems[name]; ok {
+			// if _, ok := personItems[name]; ok {
+			// 	continue
+			// }
+
+			// Only score items I haven't bought yet
+			isBought, ok := personItems[name]
+			if !ok {
+				continue
+			}
+
+			if isBought == 1.0 {
 				continue
 			}
 
 			sumSim[name] += +weight
 			sumScore[name] += score * weight
-			println("-----")
-			println(sumSim[name])
-			println(sumScore[name])
-			println("-----")
 		}
 	}
 
@@ -91,6 +98,9 @@ func GetRecommendations(prefs datasource.Prefs, person string, algorithm similar
 	}
 
 	sort.Sort(ByScore(ps))
+	if len(ps) > 5 {
+		ps = ps[:5]
+	}
 
 	return
 }
@@ -108,7 +118,17 @@ func GetRecommendationItems(itemMatch datasource.Prefs, userRates map[string]flo
 		// Loop over items similar to this one
 		for name, score := range itemMatch[ratedName] {
 			// Ignore if this user has already rated this item
-			if _, ok := userRates[name]; ok {
+			// if _, ok := userRates[name]; ok {
+			// 	continue
+			// }
+
+			// Only score items I haven't bought yet
+			isRated, ok := userRates[name]
+			if !ok {
+				continue
+			}
+
+			if isRated == 1.0 {
 				continue
 			}
 
@@ -128,6 +148,10 @@ func GetRecommendationItems(itemMatch datasource.Prefs, userRates map[string]flo
 	}
 
 	sort.Sort(ByScore(ps))
+
+	if len(ps) > 5 {
+		ps = ps[:5]
+	}
 
 	return
 }

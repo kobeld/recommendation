@@ -34,7 +34,7 @@ func main() {
 	}
 
 	fmt.Printf("\n3. Getting recommendations for %s\n", targetPerson)
-	itemScores := filters.GetRecommendations(datasource.BoughtItems, targetPerson, filters.EuclideanDistance)
+	itemScores := filters.GetRecommendations(datasource.BoughtItems, targetPerson, filters.PearsonCorrelation)
 	for i, ps := range itemScores {
 		fmt.Printf("  %d) %s: %+v\n", i+1, ps.Name, ps.Score)
 	}
@@ -53,16 +53,25 @@ func main() {
 		fmt.Printf("  %d) %s: %+v\n", i+1, ps.Name, ps.Score)
 	}
 
-	fmt.Printf("\n6. Item-based filtering, Getting recommendations for %s\n", targetPerson)
-	itemMatch := filters.CalculateSimilarItems(moviePrefs)
+	fmt.Printf("\n6. Item-based filtering, getting item mapping")
+	itemMatch := filters.CalculateSimilarItems(moviePrefs, filters.EuclideanDistance)
+
+	for key1, value1 := range itemMatch {
+		fmt.Printf("\n%s: \n", key1)
+		for key2, value2 := range value1 {
+			fmt.Printf("    %s: %+v \n", key2, value2)
+		}
+	}
+
 	userRates := datasource.BoughtItems[targetPerson]
 	itemScores = filters.GetRecommendationItems(itemMatch, userRates)
+	fmt.Printf("\n7. Item-based filtering, Getting recommendations for %s\n", targetPerson)
 	for i, ps := range itemScores {
 		fmt.Printf("  %d) %s: %+v\n", i+1, ps.Name, ps.Score)
 	}
 
 	bookPrefs := filters.TransformPrefs(datasource.BoughtBooks)
 	scoreBookAB := filters.PhiCorrelation(bookPrefs["Book A"], bookPrefs["Book B"])
-	fmt.Printf("\n7. Phi Correlation for ‘%s’ and '%s' is %+v\n", "Book A", "Book B", scoreBookAB)
+	fmt.Printf("\n8. Phi Correlation for ‘%s’ and '%s' is %+v\n", "Book A", "Book B", scoreBookAB)
 
 }

@@ -99,6 +99,33 @@ var BoughtItems Prefs = map[string]map[string]float64{
 		"You, Me and Dupree": 0.0},
 }
 
+var BoughtItems2 Prefs = map[string]map[string]float64{
+	"Lisa": map[string]float64{
+		"Lady in the Water": 1.0,
+		"Snakes on a Plane": 1.0},
+	"Gene": map[string]float64{
+		"Just My Luck": 1.0},
+	"Michael": map[string]float64{
+		"Lady in the Water":  1.0,
+		"Snakes on a Plane":  1.0,
+		"Superman Returns":   1.0,
+		"The Night Listener": 1.0},
+	"Claudia": map[string]float64{
+		"Just My Luck":       1.0,
+		"You, Me and Dupree": 1.0},
+	"Mick": map[string]float64{
+		"Lady in the Water":  1.0,
+		"Just My Luck":       1.0,
+		"Superman Returns":   1.0,
+		"The Night Listener": 1.0},
+	"Jack": map[string]float64{
+		"The Night Listener": 1.0},
+	"Toby": map[string]float64{
+		"Snakes on a Plane":  1.0,
+		"Superman Returns":   1.0,
+		"The Night Listener": 1.0},
+}
+
 var BoughtBooks Prefs = map[string]map[string]float64{
 	"1": map[string]float64{
 		"Book A": 1.0,
